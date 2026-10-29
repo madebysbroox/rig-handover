@@ -14,12 +14,12 @@ in a shell this agent can run.
 2. Draft the split as a table: title · plan section · scope · done when · blocked by.
    One issue per unit of work.
 3. **Stop and show the table to the human.** Publish nothing until they approve it.
-4. Ask the human what every issue here must carry (fields, labels, wording), unless it is
-   already written down in this session or in the repo.
+4. Every issue carries the shape below (decided by the repo owner, 2026-10-29). Ask the human
+   only about anything a plan needs beyond it.
 5. Create each issue in dependency order, so blocked-by can cite real numbers:
 
    ```sh
-   gh issue create --title "<title>" --body-file <tmp.md>
+   gh issue create --title "<title>" --label plan:<plan> --body-file <tmp.md>
    ```
 
 6. Record every issue URL from gh's output (not from memory) and reply with the list.
@@ -29,6 +29,29 @@ Closing one, with the closing comment from AGENTS.md:
 ```sh
 gh issue close <n> -c "<closing comment>"
 ```
+
+## What every issue carries
+
+Label `plan:<plan>` (the `plan:` value in `plan.md`'s frontmatter). Body, in this order:
+
+```md
+Source: plan.md § <n>
+
+## Scope
+<what to build, from the plan section; the rules that bind it (ADRs, styleguide)>
+
+## Done when
+<the plan section's done condition, checkable>
+
+## Blocked by
+<#n (what it needs from it), or —>
+
+## Model
+<strongest for logic, cheaper for views and tests; one line why>
+```
+
+An issue that waits on someone outside the repo (a review, a reply) is done when they have
+answered, not when it is sent: keep it open until then, and block the next step on it.
 
 ## No `gh`
 
